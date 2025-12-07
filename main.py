@@ -31,6 +31,8 @@ class Viewer(ShowBase):
         self.center_y = int(self.winY / 2)
         self.win.movePointer(0, self.center_x, self.center_y)
 
+        self.floor_pos = 0.15
+
         # Camera rotation
         self.pitch = 0
         self.yaw = 0
@@ -87,7 +89,7 @@ class Viewer(ShowBase):
         self.accept("p", self.print_position)
 
         # Initial camera position
-        self.camera.setPos(0.8, -0.6, 0.3)
+        self.camera.setPos(0.8, -0.6, self.floor_pos)
 
         self.mouse_locked = True
         self.accept("escape", self.toggle_mouse_lock)
@@ -142,7 +144,7 @@ class Viewer(ShowBase):
         self.y_velocity += self.gravity * dt   # gravity always applies
 
         # But prevent downward drift if grounded
-        if self.camera.getZ() <= 0.3 + 1e-6:   # tiny epsilon to detect ground
+        if self.camera.getZ() <= self.floor_pos + 1e-6:   # tiny epsilon to detect ground
             if self.y_velocity < 0:
                 self.y_velocity = 0            # cancel downward velocity
             self.is_on_ground = True
@@ -158,8 +160,8 @@ class Viewer(ShowBase):
         new_z = self.camera.getZ() + self.y_velocity * dt
 
         # Clamp to floor
-        if new_z < 0.3:
-            new_z = 0.3
+        if new_z < self.floor_pos:
+            new_z = self.floor_pos
 
         self.camera.setZ(new_z)
 
