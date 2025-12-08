@@ -39,31 +39,24 @@ class Viewer(ShowBase):
         self.mouse_sensitivity = 0.15
 
         # Movement + physics
-        self.move_speed = 2.5
-        self.jump_force = 5
+        self.move_speed = 1.5
+        self.jump_force = 3
         self.gravity = -15
         self.y_velocity = 0
         self.is_on_ground = True
 
         self.camLens.setNear(0.1)
 
-        # ------------------------------
         # LOAD MODEL
-        # ------------------------------
         model = self.loader.loadModel("model/mesh.obj")
         model.reparentTo(self.render)
         model.setScale(1)
 
-        # ------------------------------
-        # ENABLE COLLISION ON MODEL
-        # ------------------------------
         # Treat all geometry as a collision surface
         for node in model.findAllMatches("**/+GeomNode"):
             node.node().setIntoCollideMask(BitMask32.bit(1))
 
-        # ------------------------------
         # CAMERA COLLISION SPHERE
-        # ------------------------------
         cnode = CollisionNode("camSphere")
         cnode.addSolid(CollisionSphere(0, 0, 0, 0.2))  # personal space
         cnode.setFromCollideMask(BitMask32.bit(1))
@@ -77,9 +70,7 @@ class Viewer(ShowBase):
         self.pusher.addCollider(self.camCollider, self.camera)
         self.cTrav.addCollider(self.camCollider, self.pusher)
 
-        # ------------------------------
         # KEY INPUT
-        # ------------------------------
         self.keys = {"w": False, "s": False, "a": False, "d": False, "space": False}
         for key in self.keys:
             self.accept(key, self.set_key, [key, True])
@@ -105,10 +96,7 @@ class Viewer(ShowBase):
     def update(self, task):
         dt = globalClock.getDt()
 
-        # -----------------------
-        # SOFTWARE MOUSE LOOK
-        # -----------------------
-
+        # MOUSE LOOK
         if(self.mouse_locked):
             pointer = self.win.getPointer(0)
             dx = pointer.getX() - self.center_x
@@ -120,9 +108,7 @@ class Viewer(ShowBase):
             self.pitch = max(-89, min(89, self.pitch))
             self.camera.setHpr(self.yaw, self.pitch, 0)
 
-        # -----------------------
         # MOVEMENT
-        # -----------------------
         move_vec = Vec3(0, 0, 0)
 
         forward = self.camera.getQuat().getForward()
@@ -140,7 +126,7 @@ class Viewer(ShowBase):
             move_vec *= self.move_speed * dt
 
 
-        # GRAVITY (downforce)
+        # GRAVITY
         self.y_velocity += self.gravity * dt   # gravity always applies
 
         # But prevent downward drift if grounded
@@ -165,10 +151,7 @@ class Viewer(ShowBase):
 
         self.camera.setZ(new_z)
 
-        # -----------------------
         # APPLY MOVEMENT
-        # (Pusher handles collisions!)
-        # -----------------------
         old_pos = self.camera.getPos()
         new_pos = old_pos + move_vec
         self.camera.setPos(new_pos)
