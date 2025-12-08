@@ -46,6 +46,7 @@ class Viewer(ShowBase):
         self.is_on_ground = True
 
         self.camLens.setNear(0.1)
+        self.camLens.setFov(90)
 
         # LOAD MODEL
         model = self.loader.loadModel("model/mesh.obj")
