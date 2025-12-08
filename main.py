@@ -41,7 +41,7 @@ class Viewer(ShowBase):
         # Movement + physics
         self.move_speed = 1.5
         self.jump_force = 3
-        self.gravity = -15
+        self.gravity = -13
         self.y_velocity = 0
         self.is_on_ground = True
 
@@ -51,8 +51,7 @@ class Viewer(ShowBase):
         # LOAD MODEL
         model = self.loader.loadModel("model/mesh.obj")
         model.reparentTo(self.render)
-        model.setScale(1)
-
+        
         # Treat all geometry as a collision surface
         for node in model.findAllMatches("**/+GeomNode"):
             node.node().setIntoCollideMask(BitMask32.bit(1))
@@ -60,8 +59,6 @@ class Viewer(ShowBase):
         # CAMERA COLLISION SPHERE
         cnode = CollisionNode("camSphere")
         cnode.addSolid(CollisionSphere(0, 0, 0, 0.2))  # personal space
-        cnode.setFromCollideMask(BitMask32.bit(1))
-        cnode.setIntoCollideMask(BitMask32.allOff())
 
         self.camCollider = self.camera.attachNewNode(cnode)
 
