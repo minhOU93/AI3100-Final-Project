@@ -123,7 +123,6 @@ class Viewer(ShowBase):
             move_vec.normalize()
             move_vec *= self.move_speed * dt
 
-
         # GRAVITY
         self.y_velocity += self.gravity * dt   # gravity always applies
 
