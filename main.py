@@ -7,7 +7,7 @@ from panda3d.core import (
     CollisionNode,
     CollisionSphere,
     CollisionTraverser,
-    CollisionHandlerPusher,
+    CollisionHandlerPusher
 )
 
 from direct.task import Task
@@ -50,6 +50,9 @@ class Viewer(ShowBase):
 
         # LOAD MODEL
         model = self.loader.loadModel("model/mesh.obj")
+        tex = self.loader.loadTexture("model/material_0.png")
+        model.setTexture(tex, 1)
+
         model.reparentTo(self.render)
         
         # Treat all geometry as a collision surface
@@ -79,6 +82,16 @@ class Viewer(ShowBase):
 
         # Initial camera position
         self.camera.setPos(0.8, -0.6, self.floor_pos)
+
+        # BACKGROUND MUSIC
+        self.music = self.loader.loadSfx("audio/bgm2.ogg")
+        self.music.setLoop(True)
+        self.music.setVolume(0.2) 
+        self.music.play()
+
+        # JUMP SFX
+        self.jump_sfx = self.loader.loadSfx("audio/jump.ogg")
+        self.jump_sfx.setVolume(0.9)
 
         self.mouse_locked = True
         self.accept("escape", self.toggle_mouse_lock)
@@ -136,6 +149,7 @@ class Viewer(ShowBase):
 
         # JUMP
         if self.is_on_ground and self.keys["space"]:
+            self.jump_sfx.play()
             self.y_velocity = self.jump_force
             self.is_on_ground = False
 

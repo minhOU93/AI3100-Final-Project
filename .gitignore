@@ -1,0 +1,5 @@
+audio/
+build/
+logs/
+dist/
+__pycache__/
