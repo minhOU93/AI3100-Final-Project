@@ -14,3 +14,11 @@ Using [Nerfstudio](https://github.com/nerfstudio-project/nerfstudio) to reconstr
 ### Download Release
 
 Alternatively, you can download the binaries from the releases.
+
+## Controls
+
+WASD for Movement
+
+Space to Jump
+
+Esc to unlock/lock mouse
