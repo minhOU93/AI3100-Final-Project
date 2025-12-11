@@ -13,7 +13,7 @@ Using [Nerfstudio](https://github.com/nerfstudio-project/nerfstudio) to reconstr
 
 ### Download Release
 
-Alternatively, you can download the binaries from the releases.
+Alternatively, you can download the binaries from the [Releases](https://github.com/minhOU93/AI3100-Final-Project/releases).
 
 ## Controls
 
